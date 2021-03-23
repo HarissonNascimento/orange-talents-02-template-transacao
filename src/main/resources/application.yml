@@ -5,6 +5,13 @@ spring:
     username: zuper
     password: password
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:18080/auth/realms/transaction-realm}
+          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:18080/auth/realms/transaction-realm/protocol/openid-connect/certs}
+
   jpa:
     hibernate:
       ddl-auto: update
