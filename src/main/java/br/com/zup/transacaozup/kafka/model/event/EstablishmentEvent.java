@@ -1,5 +1,6 @@
 package br.com.zup.transacaozup.kafka.model.event;
 
+import br.com.zup.transacaozup.model.domain.Establishment;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EstablishmentEvent {
@@ -10,6 +11,16 @@ public class EstablishmentEvent {
     private String city;
     @JsonProperty("endereco")
     private String address;
+
+    public EstablishmentEvent(String name, String city, String address) {
+        this.name = name;
+        this.city = city;
+        this.address = address;
+    }
+
+    @Deprecated
+    protected EstablishmentEvent() {
+    }
 
     public String getName() {
         return name;
@@ -23,12 +34,7 @@ public class EstablishmentEvent {
         return address;
     }
 
-    @Override
-    public String toString() {
-        return "EstablishmentEvent{" +
-                "name='" + name + '\'' +
-                ", city='" + city + '\'' +
-                ", address='" + address + '\'' +
-                '}';
+    public Establishment toEstablishment() {
+        return new Establishment(this.name, this.city, this.address);
     }
 }

@@ -1,5 +1,8 @@
 package br.com.zup.transacaozup.kafka.model.event;
 
+import br.com.zup.transacaozup.model.domain.Card;
+import br.com.zup.transacaozup.model.domain.Establishment;
+import br.com.zup.transacaozup.model.domain.Transaction;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
@@ -15,6 +18,18 @@ public class TransactionEvent {
     private CardEvent card;
     @JsonProperty("efetivadaEm")
     private String effectiveOn;
+
+    public TransactionEvent(String id, BigDecimal value, EstablishmentEvent establishment, CardEvent card, String effectiveOn) {
+        this.id = id;
+        this.value = value;
+        this.establishment = establishment;
+        this.card = card;
+        this.effectiveOn = effectiveOn;
+    }
+
+    @Deprecated
+    protected TransactionEvent() {
+    }
 
     public String getId() {
         return id;
@@ -36,14 +51,9 @@ public class TransactionEvent {
         return effectiveOn;
     }
 
-    @Override
-    public String toString() {
-        return "TransactionEvent{" +
-                "id='" + id + '\'' +
-                ", value=" + value +
-                ", establishment=" + establishment +
-                ", card=" + card +
-                ", effectiveOn=" + effectiveOn +
-                '}';
+    public Transaction toTransaction() {
+        Establishment establishment = this.establishment.toEstablishment();
+        Card card = this.card.toCard();
+        return new Transaction(this.id, this.value, establishment, card, this.effectiveOn);
     }
 }
